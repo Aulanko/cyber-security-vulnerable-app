@@ -1,5 +1,5 @@
 import './App.css'
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, useNavigate } from 'react-router-dom'
 import Register from './register'
 import { useState } from 'react'
 import Application from './application'
@@ -8,10 +8,33 @@ function App() {
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const navigate = useNavigate()
 
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = async(e) =>{
     e.preventDefault()
+    try{
+       const res = await fetch("http://localhost:3001/login",{
+        method: "POST",
+        headers: {"Content-type":"application/json"},
+        body:JSON.stringify({username, password})
+
+        
+
+        })
+        if(res.ok){
+          navigate("/application")
+        }
+        else{
+          console.error("Login failed:", error)
+        }
+      } 
+    catch (error){
+      console.log("error during login",error)
+    }
+
+
+
     
 
   }
@@ -26,17 +49,17 @@ function App() {
               <input onChange={(e)=>setUsername(e.target.value)} type="text" placeholder="Käyttäjätunnus" />
               <input onChange={(e)=>setPassword(e.target.value)} type="password" placeholder="Salasana" />
             </div>
-            <Link to="/application">
-              <button type="submit" className="login-btn">Kirjaudu</button>
-            </Link>
-            <Link to="/register">
-              <button type="button" className='login-btn'>Register account</button>
-            </Link>
+          
+            <button type="submit" className="login-btn">Kirjaudu</button>
+            
+           <Link to="/register">
+            <button type="button" className='login-btn'>Register account</button>
+           </Link>
           </form>
         </div>
       } />
       <Route path="/register" element={<Register />} />
-      <Route path='/application' element={<Application />} />
+      <Route path='/application' element={<Application />} /> 
     </Routes>
   )
 }
