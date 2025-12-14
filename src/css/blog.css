@@ -1,0 +1,16 @@
+
+
+.blog-form{
+    display: flex;
+    flex-direction: column;
+}
+
+#textboxid{
+    height: 200px;
+    margin-top: 20px;
+}
+
+.publish-btn{
+    background-color: antiquewhite;
+    margin-bottom: 20px;
+}

@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const fs = require("fs")
+const cookieParser = require("cookie-parser")
 const PORT = 3001
 
 app.use((req, res, next) => {
@@ -11,6 +12,8 @@ app.use((req, res, next) => {
 })
 
 app.use(express.json())
+
+app.use(cookieParser())
 
 app.post('/save-user', (req, res) => {
     console.log('Received user:', req.body)
@@ -55,19 +58,33 @@ app.post('/login', (req, res) => {
                 const fileUsername = parts[0].trim()
                 const filePassword = parts[2].trim() 
                 
+                
                 if (fileUsername === username && filePassword === password) {
+                    const sessionData = {
+                        username:username,
+                        password,password,
+                        loggedIn:true
+                    }
                     loginSuccess = true
+                    res.cookie("user-credentials", JSON.stringify(sessionData),{
+                        httpOnly: false
+                    })
                     break
                 }
             }
         }
         
         if (loginSuccess) {
-            res.json({ success: true, message: "Login successful!" })
+            res.json({ success: true, message: "Login successful!", cookiesSet:true})
+
         } else {
             res.status(401).json({ success: false, message: "Wrong username or password" })
         }
     })
+})
+
+app.post("/save-blog-post", (req,res)=>{
+    console.log("Received a blog:",req.body)
 })
 
 app.listen(PORT, () => {
