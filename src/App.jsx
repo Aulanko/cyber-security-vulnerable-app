@@ -17,7 +17,8 @@ function App() {
        const res = await fetch("http://localhost:3001/login",{
         method: "POST",
         headers: {"Content-type":"application/json"},
-        body:JSON.stringify({username, password})
+        body:JSON.stringify({username, password}),
+        credentials: 'include'
 
         
 
