@@ -14,3 +14,15 @@
     background-color: antiquewhite;
     margin-bottom: 20px;
 }
+
+.secretdiv{
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    align-self: center;
+}
+
+.blogDiv{
+    border-color: black;
+    background-color: aquamarine;
+}

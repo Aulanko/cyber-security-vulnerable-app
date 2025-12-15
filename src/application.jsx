@@ -8,6 +8,7 @@ function Application(){
     const [text, setText] = useState("")
     const [blogs, setBlogs] = useState([])
     const [currentUser, setCurrentUser] = useState(null)
+    const [secret, setSecret] = useState(true)
 
     const getCookie = (name) => {
         const cookies = document.cookie.split('; ')
@@ -29,8 +30,11 @@ function Application(){
                 console.log("Logged in as:", parsedData.username)
                 console.log("Password in cookie:", parsedData.password) 
                 
+                const user = parsedData.username
                 
-                fetchBlogs(parsedData.username)
+                fetchBlogs(user)
+                console.log("Received data:", data)
+
             } catch (error) {
                 console.log("Error parsing cookie:", error)
             }
@@ -45,6 +49,7 @@ function Application(){
             
             const response = await fetch(url)
             const data = await response.json()
+            console.log("Received data:", data)
             setBlogs(data.blogs)
         } catch (error) {
             console.log("Error fetching blogs:", error)
@@ -72,7 +77,7 @@ function Application(){
             await fetch("http://localhost:3001/save-blog-post", {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, text, username })
+                body: JSON.stringify({ title, text, username,secret })
             })
             
          
@@ -94,10 +99,30 @@ function Application(){
             <p>Logged in as: <strong>{currentUser || "Not logged in"}</strong></p>
 
             <div>
+                {
+                blogs.map((blog,index)=>{
+                    return(
+                    
+                    <div className='blogDiv' key={index}>
+                        <h3>title: {blog.title}</h3>
+                        <h4>text: {blog.text}</h4>
+                        <h5>made by: {blog.username}</h5>
+                        <h6>secret? {blog.secret}</h6>
+                    </div>
+                )})}
+            </div>
+
+            <div>
                 <h2>Create a post</h2>
                 <form onSubmit={handleSubmit} className='blog-form' action="POST">
-                    <input onChange={(e)=>{setTitle(e.target.value)}} placeholder='Title'/>
-                    <input onChange={(e)=>{setText(e.target.value)}} id='textboxid' type='text' placeholder='input blog text here'/>
+                    <h2>would this post be visible for others?</h2>
+                    <div className='secretdiv'>
+                        <p>Yes?</p>
+                        <input checked={secret} onChange={(e)=>setSecret(e.target.checked)} type='checkbox' placeholder='Is a secret'/>
+                    </div>
+                    
+                    <input value={title} onChange={(e)=>{setTitle(e.target.value)}} placeholder='Title'/>
+                    <input value={text} onChange={(e)=>{setText(e.target.value)}} id='textboxid' type='text' placeholder='input blog text here'/>
                     <button type='submit' className='publish-btn'>Publish</button>
                 </form>
             </div>

@@ -4,14 +4,14 @@ const fs = require("fs")
 const cookieParser = require("cookie-parser")
 const PORT = 3001
 
-// FIXED CORS middleware - handles preflight properly
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173')
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH')
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
     res.setHeader('Access-Control-Allow-Credentials', 'true')
     
-    // Handle preflight requests
+   
     if (req.method === 'OPTIONS') {
         return res.sendStatus(200)
     }
@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 app.use(express.json())
 app.use(cookieParser())
 
-// ADD THIS: Simple root route to fix the 404
+
 app.get('/', (req, res) => {
     res.json({ 
         message: "Backend server is running! ✅",
@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
     })
 })
 
-// ADD THIS: Test endpoint to verify cookies
+
 app.get('/test-cookies', (req, res) => {
     res.json({
         cookiesReceived: req.cookies,
@@ -94,7 +94,7 @@ app.post('/login', (req, res) => {
                     }
                     loginSuccess = true
                     
-                    // FIXED cookie settings
+                 
                     res.cookie("user-credentials", JSON.stringify(sessionData), {
                         httpOnly: false,
                         domain: 'localhost',
@@ -129,9 +129,11 @@ app.post('/login', (req, res) => {
 app.post("/save-blog-post", (req, res) => {
     console.log("Received a blog:", req.body)
     
-    const { title, text, username } = req.body
+    const { title, text, username, secret } = req.body
+
+    const secretValue = secret !== undefined ? secret : false
     
-    const csvLine = `${username || 'anonymous'},${title},${text}\n`
+    const csvLine = `${username || 'anonymous'},${title},${text},${secretValue}\n`
     
     fs.appendFile("blogs.csv", csvLine, (err) => {
         if (err) {
@@ -144,10 +146,11 @@ app.post("/save-blog-post", (req, res) => {
 
 app.get("/get-blogs", (req, res) => {
     const requestedUsername = req.query.username
+    console.log("requested, username:",requestedUsername)
     
     fs.readFile("blogs.csv", 'utf8', (err, data) => {
         if (err) {
-            // If file doesn't exist, return empty array
+            
             return res.json({ 
                 blogs: [],
                 message: "No blogs file yet"
@@ -166,13 +169,15 @@ app.get("/get-blogs", (req, res) => {
                 const blogUsername = parts[0].trim()
                 const title = parts[1].trim()
                 const text = parts[2].trim()
+                const secret = parts[3]? parts[3].trim():"false"
                 
-                if (!requestedUsername || blogUsername === requestedUsername) {
+                if (secret=="false"||requestedUsername==blogUsername) {
                     blogs.push({
                         username: blogUsername,
                         title: title,
                         text: text,
-                        id: i 
+                        id: i ,
+                        secret:secret
                     })
                 }
             }
