@@ -22,7 +22,9 @@ function Application(){
     }
 
     useEffect(() => {
+        
         const cookieData = getCookie("user-credentials")
+        
         if (cookieData) {
             try {
                 const parsedData = JSON.parse(cookieData)
@@ -39,6 +41,21 @@ function Application(){
                 console.log("Error parsing cookie:", error)
             }
         }}, [])
+
+    //fixed userEffect version:
+    useEffect(() => {
+        // username from the display uer cookie (not httpOnly)
+        const username = getCookie("username")
+        if (username) {
+            setCurrentUser(username)
+            console.log("Logged in as:", username) // Leave password out of the logging
+            
+            fetchBlogs(username)
+        } else {
+            
+            console.log("No user session found")
+        }
+    }, [])
 
     const fetchBlogs = async (username = null) => {
         try {

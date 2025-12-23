@@ -27,11 +27,11 @@ function App() {
           navigate("/application")
         }
         else{
-          console.error("Login failed:", error)
+          console.error("Login failed:")
         }
       } 
     catch (error){
-      console.log("error during login",error)
+      console.log("error during login:",error)
     }
 
 
