@@ -20,7 +20,7 @@ function Application(){
         }
         return null
     }
-
+    /*
     useEffect(() => {
         
         const cookieData = getCookie("user-credentials")
@@ -41,7 +41,7 @@ function Application(){
                 console.log("Error parsing cookie:", error)
             }
         }}, [])
-
+        */
     //fixed userEffect version:
     useEffect(() => {
         // username from the display uer cookie (not httpOnly)
@@ -56,7 +56,7 @@ function Application(){
             console.log("No user session found")
         }
     }, [])
-
+    /*
     const fetchBlogs = async (username = null) => {
         try {
             let url = "http://localhost:3001/get-blogs"
@@ -71,16 +71,46 @@ function Application(){
         } catch (error) {
             console.log("Error fetching blogs:", error)
         }
+    } */
+
+    //fixed blog fething.
+    const fetchBlogs = async(username=null)=>{
+        try{
+            let url = "http://localhost:3001/get-blogs"
+            if (username) {
+                url += `?username=${username}`
+            }
+            const response = await fetch(url,{
+                credentials:"include"
+            })
+            if(!response.ok){
+                throw new Error("Error on the fetchBlogs function, response was not okay")
+            }
+            const data = await response.json()
+            console.log("Received data:", data)
+
+            if(data.blogs){
+                setBlogs(data.blogs)
+
+            }else if (data.message){
+                console.log("message from server,", data.message)
+            }
+
+        }catch(error){
+            console.log("Error fetching the blogs", error)
+        }
     }
 
     
-    
 
+    
+    
+    /*
     const handleSubmit = async(e) =>{
         e.preventDefault()
         const cookieData = getCookie("user-credentials")
         let username = currentUser
-        
+
         if (cookieData) {
             try {
                 const parsedData = JSON.parse(cookieData)
@@ -107,7 +137,74 @@ function Application(){
         }
         catch(error){
             console.log("error during posting a form", error)
-        }}
+        }} */
+
+    //fixed handle submit:
+    const handleSubmit = async(e) =>{
+        e.preventDefault()
+        
+        
+        let username = currentUser
+        
+        if (!username) {
+            console.log("No user logged in")
+            alert("Please login to post a blog") 
+            return
+        }
+
+        // added basic validation
+        if (!title.trim() || !text.trim()) {
+            alert("Title and text are required")
+            return
+        }
+
+        // prevent basic injection
+        const sanitizedTitle = title.trim().replace(/[<>]/g, '') // Remove < and >
+        const sanitizedText = text.trim().replace(/[<>]/g, '') // Remove < and >
+        
+        try {
+            // Send request with credentials (includes httpOnly auth_token)
+            const response = await fetch("http://localhost:3001/save-blog-post", {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    
+                },
+                credentials: 'include', // sends cookies
+                body: JSON.stringify({ 
+                    title: sanitizedTitle, 
+                    text: sanitizedText, 
+                    username, 
+                    secret 
+                })
+            })
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    alert("Session expired. Please login again.")
+                    
+                    return
+                }
+                throw new Error(`HTTP error! status: ${response.status}`)
+            }
+            
+            const result = await response.json()
+            console.log("Blog saved:", result.message)
+            
+            // Refresh blogs
+            fetchBlogs(username)
+            
+            // Clear form
+            setTitle("")
+            setText("")
+            
+        } catch(error) {
+            console.log("Error during posting a form", error)
+            alert("Failed to save blog. Please try again.")
+        }
+    }
+
+    
 
     
     return(
