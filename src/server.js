@@ -270,6 +270,21 @@ app.get("/get-blogs", (req, res) => {
     })
 })
 
+app.post("/logout", (req, res)=>{
+    res.clearCookie("auth_token",{
+        httpOnly:true,
+        sameSite:"strict"
+    })
+    res.clearCookie("username",{
+        httpOnly:true,
+        sameSite:"strict"
+    })
+    res.json({
+        success:true,
+        message:"Logged out succesfully"
+    })
+})
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`)
     console.log(`Frontend should be at: http://localhost:5173`)

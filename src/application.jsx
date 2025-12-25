@@ -9,6 +9,7 @@ function Application(){
     const [blogs, setBlogs] = useState([])
     const [currentUser, setCurrentUser] = useState(null)
     const [secret, setSecret] = useState(true)
+    const navigate = useNavigate()
 
     const getCookie = (name) => {
         const cookies = document.cookie.split('; ')
@@ -204,7 +205,21 @@ function Application(){
         }
     }
 
-    
+    const handleLogout = async(e) =>{
+        try{
+            await fetch("http://localhost:3001/logout",{
+                method:"POST",
+                credentials:"include"
+            })
+            setCurrentUser(null)
+            setBlogs([])
+            navigate("/")
+        }catch(error){
+            console.log("Error during logout", error)
+        }
+    }
+
+
 
     
     return(
@@ -241,9 +256,9 @@ function Application(){
                 </form>
             </div>
 
-            <Link to="/">
-              <button type="button" className='login-btn'>back to login</button>
-            </Link>
+           
+            <button onClick={handleLogout} type="button" className='login-btn'>Logout</button>
+           
         </div>
     )}
 
