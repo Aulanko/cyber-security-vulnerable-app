@@ -21,7 +21,7 @@ function Application(){
         }
         return null
     }
-    /*
+    
     useEffect(() => {
         
         const cookieData = getCookie("user-credentials")
@@ -42,8 +42,9 @@ function Application(){
                 console.log("Error parsing cookie:", error)
             }
         }}, [])
-        */
+        
     //fixed userEffect version:
+    /*
     useEffect(() => {
         // username from the display uer cookie (not httpOnly)
         const username = getCookie("username")
@@ -57,7 +58,8 @@ function Application(){
             console.log("No user session found")
         }
     }, [])
-    /*
+    */
+    
     const fetchBlogs = async (username = null) => {
         try {
             let url = "http://localhost:3001/get-blogs"
@@ -72,9 +74,10 @@ function Application(){
         } catch (error) {
             console.log("Error fetching blogs:", error)
         }
-    } */
+    } 
 
     //fixed blog fething.
+    /*
     const fetchBlogs = async(username=null)=>{
         try{
             let url = "http://localhost:3001/get-blogs"
@@ -102,11 +105,11 @@ function Application(){
         }
     }
 
-    
+    */
 
     
     
-    /*
+    
     const handleSubmit = async(e) =>{
         e.preventDefault()
         const cookieData = getCookie("user-credentials")
@@ -129,7 +132,7 @@ function Application(){
             })
             
          
-            fetchBlogs(username)
+            fetchBlogs()
             
             
             setTitle("")
@@ -138,9 +141,10 @@ function Application(){
         }
         catch(error){
             console.log("error during posting a form", error)
-        }} */
+        }} 
 
     //fixed handle submit:
+    /*
     const handleSubmit = async(e) =>{
         e.preventDefault()
         
@@ -204,7 +208,7 @@ function Application(){
             alert("Failed to save blog. Please try again.")
         }
     }
-
+    */
     const handleLogout = async(e) =>{
         try{
             await fetch("http://localhost:3001/logout",{

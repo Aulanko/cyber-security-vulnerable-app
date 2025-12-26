@@ -46,7 +46,7 @@ app.get('/test-cookies', (req, res) => {
 })
 
 
-/*
+
 app.post('/save-user', (req, res) => {
     console.log('Received user:', req.body)
     
@@ -65,9 +65,10 @@ app.post('/save-user', (req, res) => {
         res.json({ message: "Saved!" })
     })
 })
-*/
+
 
 //fixed version: 
+/*
 const bcrypt = require("bcrypt") //crypting libratry
 const jswt = require("jsonwebtoken") // this gives a way to auth users without storing
 // sessions to server
@@ -93,7 +94,7 @@ app.post(('/save-user'), async(req, res) =>{
         return res.status(500).json({message:"Registration failed"})
     }
 })
-
+*/
 
 app.post('/login', (req, res) => {
     console.log('Login attempt:', req.body) //passord should not be logged
@@ -120,7 +121,7 @@ app.post('/login', (req, res) => {
                 
                
 
-                /*
+                
                 //we also have a plain text password comparison, which is quite poor.
                 if (fileUsername === username && filePassword === password) {
                     //storing password into session data -> huge no go. 
@@ -146,10 +147,10 @@ app.post('/login', (req, res) => {
                     break
                 }
                 
-                */
+                
 
                 //fixed login to check hashed passwords.
-
+                /*
                 hashedPassword = parts[2].trim()
                 if(fileUsername ==username){
                     //using the bcrypt library for comparison
@@ -185,6 +186,7 @@ app.post('/login', (req, res) => {
 
                     }
                 }
+                    */
             }
         }
         
@@ -246,8 +248,8 @@ app.get("/get-blogs", (req, res) => {
             if (parts.length >= 3) {
                 const blogUsername = parts[0].trim()
                 const title = parts[1].trim()
-                const text = parts[2].trim()
-                const secret = parts[3]? parts[3].trim():"false"
+                const text = parts.slice(2, parts.length - 1).join(',').trim()
+                const secret = parts[parts.length - 1].trim()
                 
                 if (secret=="false"||requestedUsername==blogUsername) {
                     blogs.push({
