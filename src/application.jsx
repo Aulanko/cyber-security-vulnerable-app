@@ -132,7 +132,7 @@ function Application(){
             })
             
          
-            fetchBlogs()
+            fetchBlogs(username)
             
             
             setTitle("")
