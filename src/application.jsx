@@ -21,6 +21,22 @@ function Application(){
         }
         return null
     }
+
+    const fetchBlogs = async (username = null) => {
+        try {
+            let url = "http://localhost:3001/get-blogs"
+            if (username) {
+                url += `?username=${username}`
+            }
+            
+            const response = await fetch(url)
+            const data = await response.json()
+            console.log("Received data:", data)
+            setBlogs(data.blogs)
+        } catch (error) {
+            console.log("Error fetching blogs:", error)
+        }
+    } 
     
     useEffect(() => {
         
@@ -60,21 +76,7 @@ function Application(){
     }, [])
     */
     
-    const fetchBlogs = async (username = null) => {
-        try {
-            let url = "http://localhost:3001/get-blogs"
-            if (username) {
-                url += `?username=${username}`
-            }
-            
-            const response = await fetch(url)
-            const data = await response.json()
-            console.log("Received data:", data)
-            setBlogs(data.blogs)
-        } catch (error) {
-            console.log("Error fetching blogs:", error)
-        }
-    } 
+    
 
     //fixed blog fething.
     /*
@@ -248,7 +250,7 @@ function Application(){
             <div>
                 <h2>Create a post</h2>
                 <form onSubmit={handleSubmit} className='blog-form' action="POST">
-                    <h2>would this post be visible for others?</h2>
+                    <h2>would this post be NOT visible for others?</h2>
                     <div className='secretdiv'>
                         <p>Yes?</p>
                         <input checked={secret} onChange={(e)=>setSecret(e.target.checked)} type='checkbox' placeholder='Is a secret'/>

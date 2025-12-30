@@ -6,9 +6,6 @@ Jonne,Jonne's blog,yes,true
 liina,Liina is sgtupid,Opaa!!,true
 Jonne,aaa,a,true
 
-anonymous,Anonomous writes,hahaa, I can see your blogs without having an account,true
-anonymous,asad,dsad,true
-anonymous,I can see you,jaaa,false
-Jonne,alert,<script>alert('XSS Success!')</script>,false
-attacker,Hacked,test,admin,true,false
-attacker,Hacked OPAA!!,test,admin,true,false
+attacka postman patta,Hacked OPAA!!,test,admin,true,false
+
+opa,real private,opaAA,true
