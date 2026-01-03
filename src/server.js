@@ -48,7 +48,7 @@ app.get('/test-cookies', (req, res) => {
 
 
 //original 
-/*
+
 app.post('/save-user', (req, res) => {
     console.log('Received user:', req.body)
     
@@ -67,10 +67,10 @@ app.post('/save-user', (req, res) => {
         res.json({ message: "Saved!" })
     })
 }) 
-*/
+
 
 //fixed version: 
-
+/*
 const bcrypt = require("bcrypt") //crypting libratry
 const jwt = require("jsonwebtoken") // this gives a way to auth users without storing
 // sessions to server
@@ -111,7 +111,7 @@ const authenticate = (req, res, next) => {
     })
   }
 }
-
+*/
 
 //original
 app.post(('/save-user'), async(req, res) =>{
@@ -132,7 +132,8 @@ app.post(('/save-user'), async(req, res) =>{
     }
 })
 
-//improved save-user route:
+//fixed/improved save-user route:
+/*
 app.post('/save-user', async (req, res) => {
     // ADD: Input validation (A03/A08 fix)
     const { username, email, password } = req.body
@@ -179,11 +180,12 @@ app.post('/save-user', async (req, res) => {
         console.error("Error hashing password:", error)
         return res.status(500).json({ message: "Registration failed" })
     }
-})
+}) 
+*/
 
 
 //original:
-/*
+
 app.post('/login', (req, res) => {
     console.log('Login attempt:', req.body) //passord should not be logged
     
@@ -212,7 +214,7 @@ app.post('/login', (req, res) => {
                 //original
                 //we also have a plain text password comparison, which is quite poor.
                 //comment from here out to the next stop to get the working version -->
-                /*
+                
                 if (fileUsername === username && filePassword === password) {
                     //storing password into session data -> huge no go. 
                     const sessionData = {
@@ -260,9 +262,10 @@ app.post('/login', (req, res) => {
             })
         }
     })
-}) */
+}) 
 
 //fixed login:
+/*
 app.post('/login', loginLimiter, async (req, res) => {
     // No more logging passwords
     const { username, password } = req.body
@@ -357,11 +360,11 @@ app.post('/login', loginLimiter, async (req, res) => {
         })
     })
 })
-
+*/
 
 
 //original
-/*
+
 app.post("/save-blog-post", (req, res) => {
     console.log("Received a blog:", req.body)
     
@@ -378,10 +381,11 @@ app.post("/save-blog-post", (req, res) => {
         }
         res.json({ message: "Blog saved!" })
     })
-}) */
+}) 
 
 
 //fixed save-blog-post.
+/*
 app.post("/save-blog-post", authenticate, (req, res) => {
     // Get username from JWT, not from request body
     const username = req.user.username
@@ -419,11 +423,11 @@ app.post("/save-blog-post", authenticate, (req, res) => {
         res.json({ message: "Blog saved!" })
     })
 })
-
+*/
 
 
 //original
-/*
+
 app.get("/get-blogs", (req, res) => {
     const requestedUsername = req.query.username
     console.log("requested, username:",requestedUsername)
@@ -471,9 +475,10 @@ app.get("/get-blogs", (req, res) => {
         })
     })
 })
-*/
+
 
 //fixed get-blogs
+/*
 app.get("/get-blogs", authenticate, (req, res) => {
     const requestedUsername = req.query.username
     const loggedInUser = req.user.username
@@ -546,7 +551,7 @@ app.get("/get-blogs", authenticate, (req, res) => {
         })
     })
 })
-
+*/
 
 app.post("/logout", (req, res)=>{
     res.clearCookie("auth_token",{
