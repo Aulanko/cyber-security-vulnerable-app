@@ -25,19 +25,7 @@ npm install
 > Note: `bcrypt` is included as a dependency. If you cannot build native modules, consider `bcryptjs` as a fallback and update the server code accordingly.
 
 ### Environment variables
-Set a strong JWT secret for production. The server reads `process.env.JWT_secreta`.
-
-macOS / Linux:
-```bash
-export JWT_secreta='a_strong_random_secret_here'
-```
-
-Windows PowerShell:
-```powershell
-$env:JWT_secreta = 'a_strong_random_secret_here'
-```
-
-(Optionally add a `.env` and use `dotenv` in the server if you prefer.)
+Not really needed in here, but you can put them just for lols
 
 ### Run the app (development)
 Open two terminals:
