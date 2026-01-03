@@ -85,7 +85,6 @@ $env:JWT_secreta = 'a_strong_random_secret_here'
 ##  Quick checklist
 - [ ] Install Node (LTS) and build tools
 - [ ] Run `npm install`
-- [ ] Set `JWT_secreta` env var
 - [ ] Start server: `npm run server`
 - [ ] Start frontend: `npm run dev`
 
