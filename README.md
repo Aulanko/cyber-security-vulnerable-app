@@ -1,16 +1,105 @@
-# React + Vite
+# my-noob-react-app
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple Vite + React frontend with an Express backend. This repository contains a development frontend (Vite) and a backend server (Express) that persists users and blogs to CSV files.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+##  Quick start (Development)
 
-## React Compiler
+### Prerequisites
+- Node.js (LTS recommended, e.g. Node 18+ or 20 LTS)
+- npm (bundled with Node) or yarn
+- Git (optional)
+- Build tools for native modules (required by `bcrypt`):
+  - macOS: Xcode Command Line Tools (`xcode-select --install`)
+  - Linux (Debian/Ubuntu): `build-essential`, `python3`, `make`, `g++`
+  - Windows: Visual Studio Build Tools (C++ workload) or use WSL
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Install dependencies
+From the project root:
 
-## Expanding the ESLint configuration
+```bash
+npm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+> Note: `bcrypt` is included as a dependency. If you cannot build native modules, consider `bcryptjs` as a fallback and update the server code accordingly.
+
+### Environment variables
+Set a strong JWT secret for production. The server reads `process.env.JWT_secreta`.
+
+macOS / Linux:
+```bash
+export JWT_secreta='a_strong_random_secret_here'
+```
+
+Windows PowerShell:
+```powershell
+$env:JWT_secreta = 'a_strong_random_secret_here'
+```
+
+(Optionally add a `.env` and use `dotenv` in the server if you prefer.)
+
+### Run the app (development)
+Open two terminals:
+
+Terminal A — start backend:
+```bash
+npm run server
+# starts Express backend on http://localhost:3001
+```
+
+Terminal B — start frontend dev server:
+```bash
+npm run dev
+# Vite dev server on http://localhost:5173
+```
+
+Open http://localhost:5173 in your browser. The frontend expects the backend at http://localhost:3001.
+
+---
+
+## 🖥️ Platform-specific notes
+
+### macOS 
+- Install Node (use `nvm` recommended) and Xcode Command Line Tools:
+```bash
+xcode-select --install
+```
+- Use `nvm` to install Node LTS and then `npm install`.
+
+### Ubuntu / Debian Linux 
+```bash
+sudo apt update
+sudo apt install -y build-essential python3 make g++
+# install nvm and Node LTS, then npm install
+```
+
+### Windows (PowerShell) 
+- Use nvm-windows or Node installer from nodejs.org.
+- Install Visual Studio Build Tools (C++ workload) or use WSL and follow Linux steps to avoid native build issues.
+- Set the env var in PowerShell:
+```powershell
+$env:JWT_secreta = 'a_strong_random_secret_here'
+```
+
+---
+
+##  Troubleshooting & Tips
+- bcrypt build failures: ensure platform build tools are installed, or switch to `bcryptjs` as a fallback.
+- CORS/cookies: the server allows CORS from `http://localhost:5173`. When sending requests that rely on cookies, use `fetch(..., { credentials: 'include' })` from the frontend.
+- Ports:
+  - Frontend: 5173 (Vite)
+  - Backend: 3001 (Express)
+- If ports conflict, change Vite's port or the `PORT` constant in `src/server.js`.
+
+---
+
+##  Quick checklist
+- [ ] Install Node (LTS) and build tools
+- [ ] Run `npm install`
+- [ ] Set `JWT_secreta` env var
+- [ ] Start server: `npm run server`
+- [ ] Start frontend: `npm run dev`
+
+---
+
