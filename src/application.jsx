@@ -22,6 +22,8 @@ function Application(){
         return null
     }
 
+    //original
+    /* 
     const fetchBlogs = async (username = null) => {
         try {
             let url = "http://localhost:3001/get-blogs"
@@ -36,8 +38,10 @@ function Application(){
         } catch (error) {
             console.log("Error fetching blogs:", error)
         }
-    } 
+    }  */
     
+    //original
+    /*
     useEffect(() => {
         
         const cookieData = getCookie("user-credentials")
@@ -58,15 +62,17 @@ function Application(){
                 console.log("Error parsing cookie:", error)
             }
         }}, [])
+
+    */
         
     //fixed userEffect version:
-    /*
+    
     useEffect(() => {
         // username from the display uer cookie (not httpOnly)
         const username = getCookie("username")
         if (username) {
             setCurrentUser(username)
-            console.log("Logged in as:", username) // Leave password out of the logging
+            //console.log("Logged in as:", username) // Leave password out of the logging
             
             fetchBlogs(username)
         } else {
@@ -74,12 +80,12 @@ function Application(){
             console.log("No user session found")
         }
     }, [])
-    */
+    
     
     
 
     //fixed blog fething.
-    /*
+    
     const fetchBlogs = async(username=null)=>{
         try{
             let url = "http://localhost:3001/get-blogs"
@@ -107,11 +113,11 @@ function Application(){
         }
     }
 
-    */
+    
 
     
-    
-    
+    //original
+    /*
     const handleSubmit = async(e) =>{
         e.preventDefault()
         const cookieData = getCookie("user-credentials")
@@ -145,8 +151,10 @@ function Application(){
             console.log("error during posting a form", error)
         }} 
 
+    */
+
     //fixed handle submit:
-    /*
+    
     const handleSubmit = async(e) =>{
         e.preventDefault()
         
@@ -210,7 +218,7 @@ function Application(){
             alert("Failed to save blog. Please try again.")
         }
     }
-    */
+    
     const handleLogout = async(e) =>{
         try{
             await fetch("http://localhost:3001/logout",{

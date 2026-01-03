@@ -1,11 +1,3 @@
-
-liina,Liina's privat oist,this is private,true
-liina,Liina's second private psot,no one can see this,true
-liina,public to show example,yes, this is public,false
-Jonne,Jonne's blog,yes,true
-liina,Liina is sgtupid,Opaa!!,true
-Jonne,aaa,a,true
-
+a,asd pub,123,false
+a,aws privt,123,true
 attacka postman patta,Hacked OPAA!!,test,admin,true,false
-
-opa,real private,opaAA,true
