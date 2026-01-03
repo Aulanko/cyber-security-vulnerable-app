@@ -46,7 +46,7 @@ Open http://localhost:5173 in your browser. The frontend expects the backend at 
 
 ---
 
-## 🖥️ Platform-specific notes
+## Platform-specific notes
 
 ### macOS 
 - Install Node (use `nvm` recommended) and Xcode Command Line Tools:
