@@ -31,4 +31,4 @@ Consequenses:
 Too much information is leaked via console logs, browser tools or XSS accessible cookies, which can help with taking over accounts and harvesting information from those accounts.
 
 Fix:
-Removed sensitive logging, logging only non-sensitive data. Avoided storing credentials into non-httpOnly cookies. httpOnly cookies were only used for server-managed-session tokens, in other words JWTs. Also not storing password values into cookies. Made a seperate cookie for displaying the username (username cookie):https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L240-L259
+Removed sensitive logging, logging only non-sensitive data. Avoided storing credentials into non-httpOnly cookies. httpOnly cookies were only used for server-managed-session tokens, in other words JWTs. Also not storing password values into cookies. Made a seperate cookie for displaying the username (username cookie):https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L336-L341
