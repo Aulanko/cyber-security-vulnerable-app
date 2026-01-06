@@ -21,7 +21,7 @@ and lastly using HTTPS connection for data transits (if this were to go to produ
 Flaw 2: A05:2021 - Securiyt misconfiguration - Sensitive data was leaked via cookies and logs.
 
 Source:
-Source (logs): https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L192
+Source (logs): https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L190-L192
 Source (cookie): https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/application.jsx#L54
 
 Description:
