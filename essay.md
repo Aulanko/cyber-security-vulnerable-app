@@ -32,3 +32,22 @@ Too much information is leaked via console logs, browser tools or XSS accessible
 
 Fix:
 Removed sensitive logging, logging only non-sensitive data. Avoided storing credentials into non-httpOnly cookies. httpOnly cookies were only used for server-managed-session tokens, in other words JWTs. Also not storing password values into cookies. Made a seperate cookie for displaying the username (username cookie):https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L336-L341
+
+
+Flaw 3: A07:2021 - Identification & Authentication Failures -  server side session missed validation & session cookie could been manipulated.
+
+Source: https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L226-L235
+
+Description:
+username and password variables were stored into user credentials cookie which also had httpOnly:false. This cookie was visible for client, which enables attacker or client to edit this cookie. Therefore one could impressionate other users without being actually logged in as them. The server side did not have validation for operations such as blog posts. Requests were only dependent on username.
+
+Consequences:
+Horizontal privilege escalation and succesful but false-impressionation was possible. Logged in user could edit the cookie to "become" anyone, and access their private content.
+
+Fix:
+Removed the user credentials cookie entirely. Started using server signed tokens (shortly; JWTs), which are stored in httPOnly, secure cookies. The server verifyes the token, and uses auhtentication for username on server, when saving posts. 
+Example: created authenticate middleware that reads auth token from httpOnly cookie and verifies it: https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L94-L113
+
+
+
+
