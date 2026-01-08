@@ -68,7 +68,7 @@ One fix would be to gate the application route behind an authentication. Another
 Flaw 5: A08:2021 - Software and Data Integrity Failures - No rate limiting on login attempts 
 
 Source:
-(missing limiter) no login limiter applied to the login route (intended loginLimiter at https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L24-L36, but it is not enforced in the active code)
+(missing limiter) no login limiter applied to the login route (intended loginLimiter at https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L82-L92, but it is not enforced in the active code)
 
 Description:
 The login route accepts infinite attempts to login. This is the dream case for attackers, who love brute forcing.
