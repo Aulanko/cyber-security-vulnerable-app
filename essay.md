@@ -1,4 +1,4 @@
-LINK: github repo:
+LINK: github repo: https://github.com/Aulanko/cyber-security-vulnerable-app.git
 
 FLAW 1: A02:2021 - Cryptographic Failures - Raw passwords were stored in plain text and passwords were logged onto the browser console.
 
@@ -21,8 +21,8 @@ and lastly using HTTPS connection for data transits (if this were to go to produ
 Flaw 2: A05:2021 - Securiyt misconfiguration - Sensitive data was leaked via cookies and logs.
 
 Source:
-Source (logs): https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L190-L192
-Source (cookie): https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/application.jsx#L54
+(logs): https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L190-L192
+(cookie): https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/application.jsx#L54
 
 Description:
 Request bodies are logged by the server, and the frontend console logs cookie contents (even the password). The server also sets user-credentials cookie with full session data, and also has a setting "httpOnly:false", which allows client side scripts to read the password too. 
@@ -47,6 +47,39 @@ Horizontal privilege escalation and succesful but false-impressionation was poss
 Fix:
 Removed the user credentials cookie entirely. Started using server signed tokens (shortly; JWTs), which are stored in httPOnly, secure cookies. The server verifyes the token, and uses auhtentication for username on server, when saving posts. 
 Example: created authenticate middleware that reads auth token from httpOnly cookie and verifies it: https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L94-L113
+
+Flaw 4: A01:2021 - Broken Access Control - unauthorized & authenticated actions possible.
+
+Source:
+(frontend unguarded route): https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/App.jsx#L86
+(save-post accepts client username): https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L369-L376
+
+
+Description:
+The frontend route route "/application" is accesible for anyone. But, this itself is not yet the issue. The issue is that by going to "/application" anyone, could see other peoples posts, by being able to post anonymously a post. Due to the backend's "/save-blog-post" route accepting requests without authenticated usernames, writes to the storage by anyone is possible. 
+
+Consequences:
+Attacker could create posts as he would like, spoofing anyone who comes to mind, without a proper authorization. Private posts also could be mistatributed.
+
+Fix:
+One fix would be to gate the application route behind an authentication. Another one would just to leave the application route open, for free unsigned users, but would restrict their viewing and posting by authorization. Using Server side authorization to "/save-blog-post" route with authenticate middleware and using req.user.username from the validated token instead of any client username. Validation to server side inputs ( lenght limits and filtering dangerous characters)
+
+
+Flaw 5: A08:2021 - Software and Data Integrity Failures - No rate limiting on login attempts 
+
+Source:
+(missing limiter) no login limiter applied to the login route (intended loginLimiter at https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L24-L36, but it is not enforced in the active code)
+
+Description:
+The login route accepts infinite attempts to login. This is the dream case for attackers, who love brute forcing.
+
+Consequences:
+Automated brute force-attemps have a high propability to succeed, and when they do, accounts with weak passwords get compromised easily.
+
+Fix:
+Implemented a rate limiter for login, for example the express-rate-limit library. Also limit attempts by IP addresses with exponential backoff time limits would add an extra layer of protection. Also adding monitoring, and alerts for suspicious activity, and adding multi-factor authentication would be excellent.
+
+
 
 
 
