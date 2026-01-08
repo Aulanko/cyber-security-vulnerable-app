@@ -18,7 +18,7 @@ Not storing passwords in plain text. Hashing the passwords with a modern hash (e
 In addition to this, not logging full request bodies that contain any sensitive data. For example replacing "console.log('Login attempt:', req.body) with a "console.log('Login attempt for a user:", username)" (and no password here)
 and lastly using HTTPS connection for data transits (if this were to go to production)
 
-Flaw 2: A05:2021 - Securiyt misconfiguration - Sensitive data was leaked via cookies and logs.
+FLAW 2: A05:2021 - Securiyt misconfiguration - Sensitive data was leaked via cookies and logs.
 
 Source:
 (logs): https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L190-L192
@@ -34,7 +34,7 @@ Fix:
 Removed sensitive logging, logging only non-sensitive data. Avoided storing credentials into non-httpOnly cookies. httpOnly cookies were only used for server-managed-session tokens, in other words JWTs. Also not storing password values into cookies. Made a seperate cookie for displaying the username (username cookie):https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L336-L341
 
 
-Flaw 3: A07:2021 - Identification & Authentication Failures -  server side session missed validation & session cookie could been manipulated.
+FLAW 3: A07:2021 - Identification & Authentication Failures -  server side session missed validation & session cookie could been manipulated.
 
 Source: https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L226-L235
 
@@ -48,7 +48,7 @@ Fix:
 Removed the user credentials cookie entirely. Started using server signed tokens (shortly; JWTs), which are stored in httPOnly, secure cookies. The server verifyes the token, and uses auhtentication for username on server, when saving posts. 
 Example: created authenticate middleware that reads auth token from httpOnly cookie and verifies it: https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L94-L113
 
-Flaw 4: A01:2021 - Broken Access Control - unauthorized & authenticated actions possible.
+FLAW 4: A01:2021 - Broken Access Control - unauthorized & authenticated actions possible.
 
 Source:
 (frontend unguarded route): https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/App.jsx#L86
@@ -65,7 +65,7 @@ Fix:
 One fix would be to gate the application route behind an authentication. Another one would just to leave the application route open, for free unsigned users, but would restrict their viewing and posting by authorization. Using Server side authorization to "/save-blog-post" route with authenticate middleware and using req.user.username from the validated token instead of any client username. Validation to server side inputs ( lenght limits and filtering dangerous characters)
 
 
-Flaw 5: A08:2021 - Software and Data Integrity Failures - No rate limiting on login attempts 
+FLAW 5: A08:2021 - Software and Data Integrity Failures - No rate limiting on login attempts 
 
 Source:
 (missing limiter) no login limiter applied to the login route (intended loginLimiter at https://github.com/Aulanko/cyber-security-vulnerable-app/blob/master/src/server.js#L82-L92, but it is not enforced in the active code)
